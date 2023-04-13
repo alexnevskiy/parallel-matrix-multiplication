@@ -10,7 +10,7 @@
 #include <string>
 #include <random>
 
-int allocateSpace(double ***array, int n, int m) {
+int allocateSpace(double*** array, int n, int m) {
     /* allocate the n*m contiguous items */
     double *p = (double *) malloc(n * m * sizeof(double));
     if (!p) return -1;
@@ -58,10 +58,6 @@ void generate_int_matrix_array(double** mat, int rows, int cols, int lower_bound
 }
 
 void generate_double_matrix_array(double** mat, int rows, int cols, int lower_bound, int upper_bound) {
-    std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
-    std::random_device dev;
-    std::mt19937 re(dev());
-
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             mat[i][j] = random_double(lower_bound, upper_bound);

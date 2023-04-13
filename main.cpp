@@ -38,6 +38,14 @@ int main(int argc, char *argv[]) {
         printf("Running Tests\n");
         test_square_matrix();
         test_random_size_matrix();
+        test_square_matrix_pthread(threads_count);
+        test_random_size_matrix_pthread(threads_count);
+    }
+
+    test_square_matrix_mpi(rank, num_processes);
+//    test_random_size_matrix_mpi(rank, num_processes);
+
+    if (rank == 0) {
         printf("The tests have been completed\n");
         printf("==============================================================\n");
     }

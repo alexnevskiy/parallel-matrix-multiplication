@@ -8,7 +8,7 @@
 #include "Matrix.h"
 #include <chrono>
 
-int allocateSpace(double ***array, int n, int m);
+int allocateSpace(double*** array, int n, int m);
 void print_matrix(Matrix& matrix);
 double random_double(int lower_bound, int upper_bound);
 int random_int(int lower_bound, int upper_bound);
