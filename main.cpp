@@ -11,17 +11,16 @@ using namespace std;
 using namespace std::chrono;
 
 int main(int argc, char *argv[]) {
-    int lower_bounds = 1000;
+    int lower_bounds = 0;
     int upper_bounds = 1000;
-    int warmup = 10;
     int threads_count = atoi(argv[1]);
     int rows = atoi(argv[2]);
     int cols = atoi(argv[2]);
-    int test = atoi(argv[3]);
+    int experiments_count = atoi(argv[3]);
     char* save_path = argv[4];
-    long* times_seq = new long[test];
-    long* times_pthread = new long[test];
-    long* times_mpi = new long[test];
+    long* times_seq = new long[experiments_count];
+    long* times_pthread = new long[experiments_count];
+    long* times_mpi = new long[experiments_count];
     Matrix matrix_seq, matrix_pthread, matrix_mpi;
     std::chrono::high_resolution_clock::time_point start, stop, start_pthread, stop_pthread, start_mpi, stop_mpi;
     std::chrono::system_clock::duration duration, duration_pthread, duration_mpi;
@@ -117,7 +116,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (rank == 0) {
-        for (int i = 0; i < test; i++) {
+        for (int i = 0; i < experiments_count; i++) {
             auto start_test = high_resolution_clock::now();
             matrix_seq = matrix1 * matrix2;
             auto stop_test = high_resolution_clock::now();
@@ -128,7 +127,7 @@ int main(int argc, char *argv[]) {
             times_seq[i] = duration_long;
         }
 
-        for (int i = 0; i < test; i++) {
+        for (int i = 0; i < experiments_count; i++) {
             auto start_pthread_test = high_resolution_clock::now();
             matrix_pthread = multiply_pthread(matrix1, matrix2, threads_count);
             auto stop_pthread_test = high_resolution_clock::now();
@@ -140,7 +139,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    for (int i = 0; i < test; i++) {
+    for (int i = 0; i < experiments_count; i++) {
         MPI_Bcast(&(mat1[0][0]), rows * cols, MPI_DOUBLE, 0, MPI_COMM_WORLD);
         MPI_Bcast(&(mat2[0][0]), rows * cols, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
@@ -168,19 +167,19 @@ int main(int argc, char *argv[]) {
     }
 
     if (rank == 0) {
-        double sum_times_seq = array_sum_long(times_seq, test);
-        double sum_times_pthread = array_sum_long(times_pthread, test);
-        double sum_times_mpi = array_sum_long(times_mpi, test);
+        double sum_times_seq = array_sum_long(times_seq, experiments_count);
+        double sum_times_pthread = array_sum_long(times_pthread, experiments_count);
+        double sum_times_mpi = array_sum_long(times_mpi, experiments_count);
 
         printf("==============================================================\n");
-        cout << "Time taken by multiple sequential: " << sum_times_seq / test << " microseconds" << endl;
-        cout << "Time taken by multiple pthread: " << sum_times_pthread / test << " microseconds" << endl;
-        cout << "Time taken by multiple mpi: " << sum_times_mpi / test << " microseconds" << endl;
+        cout << "Time taken by multiple sequential: " << sum_times_seq / experiments_count << " microseconds" << endl;
+        cout << "Time taken by multiple pthread: " << sum_times_pthread / experiments_count << " microseconds" << endl;
+        cout << "Time taken by multiple mpi: " << sum_times_mpi / experiments_count << " microseconds" << endl;
         cout << "Performance boost by multiple pthreads: " << sum_times_seq / sum_times_pthread << endl;
         cout << "Performance boost by multiple mpi: " << sum_times_seq / sum_times_mpi << endl;
         printf("==============================================================\n");
 
-        save_data(times_seq, times_pthread, times_mpi, threads_count, rows, test, save_path);
+        save_data(times_seq, times_pthread, times_mpi, threads_count, rows, experiments_count, save_path);
     }
 
     MPI_Finalize();

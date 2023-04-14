@@ -47,7 +47,7 @@ void Matrix::allocateSpace() {
 
 Matrix &Matrix::operator*=(const Matrix& m) {
     if (this->cols != m.rows) {
-        throw std::invalid_argument("The number of columns of matrix1 1 is not equal to the number of rows of matrix1 2.");
+        throw std::invalid_argument("The number of columns of matrix 1 is not equal to the number of rows of matrix 2.");
     }
 
     Matrix temp(rows, m.cols);

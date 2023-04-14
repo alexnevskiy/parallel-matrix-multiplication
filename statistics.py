@@ -151,7 +151,7 @@ def plot_thread_boost(dir_path):
     plt.plot(threads_count_list, mean_seq_list, linestyle='-', marker='o', label='sequentially')
     plt.plot(threads_count_list, mean_pthread_list, linestyle='-', marker='o', label='pthread')
     plt.plot(threads_count_list, mean_mpi_list, linestyle='-', marker='o', label='mpi')
-    plt.xlabel('Matrix size')
+    plt.xlabel('Threads count')
     plt.ylabel('Mean execution time, μs')
     plt.legend()
     plt.title('Comparison of execution time relative to the number of threads')
@@ -165,7 +165,7 @@ def plot_thread_boost(dir_path):
 
     plt.plot(threads_count_list, boost_pthread, linestyle='-', marker='o', label='pthread boost')
     plt.plot(threads_count_list, boost_mpi, linestyle='-', marker='o', label='mpi boost')
-    plt.xlabel('Matrix size')
+    plt.xlabel('Threads count')
     plt.ylabel('Performance boost')
     plt.legend()
     plt.title('Comparison of performance boost relative to the number of threads')

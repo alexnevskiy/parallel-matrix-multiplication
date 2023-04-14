@@ -1,4 +1,4 @@
-# Parallel Matrix Computation (Pthreads/MPI)
+# Parallel Matrix Multiplication (Pthreads/MPI)
 
 ## Used libraries
 
