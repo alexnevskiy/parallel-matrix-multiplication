@@ -6,7 +6,7 @@
 #include <cstdio>
 #include "Matrix.h"
 
-pthread_mutex_t th_mutex;
+//pthread_mutex_t th_mutex;
 
 struct arg_struct {
     arg_struct(int start_row, int end_row, int cols, Matrix& matrix1, Matrix& matrix2, double** result) :
@@ -29,9 +29,9 @@ void* compute_rows(void* args) {
             for (int k = 0; k < matrix1_cols; k++) {
                 sum += (arguments->matrix1(i, k) * arguments->matrix2(k, j));
             }
-            pthread_mutex_lock(&th_mutex);
+//            pthread_mutex_lock(&th_mutex);
             arguments->result[i][j] = sum;
-            pthread_mutex_unlock(&th_mutex);
+//            pthread_mutex_unlock(&th_mutex);
         }
     }
     pthread_exit(nullptr);

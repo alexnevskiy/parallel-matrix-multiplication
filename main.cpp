@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
     }
 
     test_square_matrix_mpi(rank, num_processes);
-//    test_random_size_matrix_mpi(rank, num_processes);
+    test_random_size_matrix_mpi(rank, num_processes);
 
     if (rank == 0) {
         printf("The tests have been completed\n");

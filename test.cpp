@@ -406,15 +406,25 @@ void test_square_matrix_mpi(int rank, int num_processes) {
 }
 
 void test_random_size_matrix_mpi(int rank, int num_processes) {
-    int rows1 = random_int(1, 100);
-    int cols1_rows2 = random_int(1, 100);
-    int cols2 = random_int(1, 100);
+    int rows1;
+    int cols1_rows2;
+    int cols2;
     int lower_bound = 0;
     int upper_bound = 10000;
     double** mat1;
     double** mat2;
     Matrix matrix1, matrix2, matrix_result;
     Eigen::MatrixXd matrixXd1, matrixXd2, matrixXd_result;
+
+    if (rank == 0) {
+        rows1 = random_int(1, 100);
+        cols1_rows2 = random_int(1, 100);
+        cols2 = random_int(1, 100);
+    }
+
+    MPI_Bcast(&rows1, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&cols1_rows2, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&cols2, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
     allocateSpace(&mat1, rows1, cols1_rows2);
     allocateSpace(&mat2, cols1_rows2, cols2);
@@ -445,9 +455,16 @@ void test_random_size_matrix_mpi(int rank, int num_processes) {
         IS_TRUE(matrix_result == matrixXd_result)
     }
 
-    rows1 = random_int(1, 300);
-    cols1_rows2 = random_int(1, 300);
-    cols2 = random_int(1, 300);
+    if (rank == 0) {
+        rows1 = random_int(1, 300);
+        cols1_rows2 = random_int(1, 300);
+        cols2 = random_int(1, 300);
+    }
+
+    MPI_Bcast(&rows1, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&cols1_rows2, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&cols2, 1, MPI_INT, 0, MPI_COMM_WORLD);
+
     allocateSpace(&mat1, rows1, cols1_rows2);
     allocateSpace(&mat2, cols1_rows2, cols2);
 
@@ -476,9 +493,16 @@ void test_random_size_matrix_mpi(int rank, int num_processes) {
         IS_TRUE(matrix_result == matrixXd_result)
     }
 
-    rows1 = random_int(1, 500);
-    cols1_rows2 = random_int(1, 500);
-    cols2 = random_int(1, 500);
+    if (rank == 0) {
+        rows1 = random_int(1, 500);
+        cols1_rows2 = random_int(1, 500);
+        cols2 = random_int(1, 500);
+    }
+
+    MPI_Bcast(&rows1, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&cols1_rows2, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&cols2, 1, MPI_INT, 0, MPI_COMM_WORLD);
+
     allocateSpace(&mat1, rows1, cols1_rows2);
     allocateSpace(&mat2, cols1_rows2, cols2);
 
